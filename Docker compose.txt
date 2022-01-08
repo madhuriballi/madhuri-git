@@ -1,0 +1,441 @@
+version: "3.7"
+
+services:
+  app:
+    image: node:12-alpine
+    command: sh -c "yarn install && yarn run dev"
+    ports:
+      - 3002:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      MYSQL_HOST: mysql 
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: todos
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - todo-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: todos
+volumes: 
+    todo-mysql-data: 
+
+
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master> cd app
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker-compose version
+Docker Compose version v2.2.1
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker-compose up -d
+[+] Running 2/2
+ - Container app_mysql_1  Started                                                                                                                                     8.3s 
+ - Container app_app_1    Started                                                                                                                                     8.3s 
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker scan getting-started
+Docker Scan relies upon access to Snyk, a third party provider, do you consent to proceed using Snyk? (y/N)
+ 
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app>    
+
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker run -d ubuntu bash -c "shuf -i 1-10000 -n 1 -o /data.txt && tail -f /dev/null"
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS             PORTS                    NAMES
+09b200f900af   ubuntu           "bash -c 'shuf -i 1-…"   2 minutes ago   Up 2 minutes                                peaceful_goldberg
+ec9d0b3469dc   mysql:5.7        "docker-entrypoint.s…"   8 days ago      Up About an hour   3306/tcp, 33060/tcp      app_mysql_1
+7765
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker run -it ubuntu ls
+bin  boot  dev  etc  home  lib  lib32  lib64  libx32  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker volume create todo-db
+todo-db
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker run -dp 3000:3000 -v todo-db:etc/todos getting-started
+e absolute.
+See 'docker run --help'.
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker run -dp 3000:3000 -v todo-db:/etc/todos getting-started
+25a1e56ef7dd2318a25060c573a3f457a0bfe45d1f09aa7e0b62343af6b6b0fa
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker volume inspect
+"docker volume inspect" requires at least 1 argument.
+See 'docker volume inspect --help'.
+
+Usage:  docker volume inspect [OPTIONS] VOLUME [VOLUME...]
+
+Display detailed information on one or more volumes
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker volume inspect todo-db
+[
+    {
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/todo-db/_data",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker run -dp 3000:3000 `
+>> node:12-alpine `
+>> sh -c "yarn install && yarn run dev"
+docker: Error response from daemon: driver failed programming external connectivity on endpoint silly_newton (8e19c445777bfa4c99564dd0bf22c7f852e24bbef7ffccf969b25e1c46c5be4f):PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS          PORTS                    NAMES
+25a1e56ef7dd   getting-started   "docker-entrypoint.s…"   22 minutes ago   Up 22 minutes   0.0.0.0:3000->3000/tcp   nice_kapitsa
+09b200f900af   ubuntu            "bash -c 'shuf -i 1-…"   34 minutes ago   Up 34 minutes                            peaceful_goldberg
+7c3191b27ccd   node:12-alpine    "docker-entrypoint.s…"   8 days ago       Up 2 hours      0.0.0.0:3002->3000/tcp   app_app_1
+ec9d0b3469dc   mysql:5.7         "docker-entrypoint.s…"   8 days ago       Up 2 hours      3306/tcp, 33060/tcp      app_mysql_1
+Using sqlite database at /etc/todos/todo.db
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker network create todo-app
+Error response from daemon: network with name todo-app already exists
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker network create todo1-app
+f51602360a7509cfd292fecebc06a17cd1f209826d7753552d96d08cedc10a0b
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker run -d `
+>> --network todo1-app --network-alias mysql `
+>> -e MYSQL_ROOT_PASSWORD=secret `
+>> -e MYSQL_DATABASE=todos `
+03e795cd5a2ffffba5820e372e26ad5efa1711b177ee95ce4157c986836e2621
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker ps
+03e795cd5a2f   mysql:5.7         "docker-entrypoint.s…"   30 seconds ago   Up 24 seconds   3306/tcp, 33060/tcp      great_carver
+25a1e56ef7dd   getting-started   "docker-entrypoint.s…"   33 minutes ago   Up 33 minutes   0.0.0.0:3000->3000/tcp   nice_kapitsa
+09b200f900af   ubuntu            "bash -c 'shuf -i 1-…"   45 minutes ago   Up 45 minutes                            peaceful_goldberg
+7c3191b27ccd   node:12-alpine    "docker-entrypoint.s…"   8 days ago       Up 2 hours      0.0.0.0:3002->3000/tcp   app_app_1
+ec9d0b3469dc   mysql:5.7         "docker-entrypoint.s…"   8 days ago       Up 2 hours      3306/tcp, 33060/tcp      app_mysql_1
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it 03e795cd5a2f mysql -u root -p
+Enter password:
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it 03e795cd5a2f mysql -u root -p
+Enter password:
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it 03e795cd5a2f mysql -u root -p
+mEnter password:
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it mysql- 03e795cd5a2f mysql -u root -p
+Error: No such container: mysql-
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it 03e795cd5a2f mysql -u root -p
+Enter password:
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it 03e795cd5a2f mysql -u root -p
+Enter password:
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app>
+
+
+
+
+
+
+
+                                                                                 docker exec -it 03e795cd5a2f mysql -u root -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it 03e795cd5a2f mysql -u root -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it 03e795cd5a2f mysql -u root -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker logs -f 03e795cd5a2f
+2022-01-08 08:17:04+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 5.7.36-1debian10 started.
+2022-01-08 08:17:05+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+2022-01-08 08:17:05+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 5.7.36-1debian10 started.
+2022-01-08T08:17:08.054568Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation 
+for more details).
+2022-01-08T08:17:08.096869Z 0 [Note] mysqld (mysqld 5.7.36) starting as process 1 ...
+2022-01-08T08:17:08.198006Z 0 [Note] InnoDB: PUNCH HOLE support available
+2022-01-08T08:17:08.198065Z 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+2022-01-08T08:17:08.198070Z 0 [Note] InnoDB: Uses event mutexes
+2022-01-08T08:17:08.198073Z 0 [Note] InnoDB: GCC builtin __atomic_thread_fence() is used for memory barrier
+2022-01-08T08:17:08.198074Z 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2022-01-08T08:17:08.198318Z 0 [Note] InnoDB: Using Linux native AIO
+2022-01-08T08:17:08.223031Z 0 [Note] InnoDB: Using CPU crc32 instructions
+2022-01-08T08:17:08.337952Z 0 [Note] InnoDB: Initializing buffer pool, total size = 128M, instances = 1, chunk size = 128M
+2022-01-08T08:17:08.718923Z 0 [Note] InnoDB: Completed initialization of buffer pool
+2022-01-08T08:17:08.822636Z 0 [Note] InnoDB: If the mysqld execution user is authorized, page cleaner thread priority can be changed. See the man page of setpriority().   
+2022-01-08T08:17:08.941186Z 0 [Note] InnoDB: Highest supported file format is Barracuda.
+2022-01-08T08:17:08.948453Z 0 [Note] InnoDB: Log scan progressed past the checkpoint lsn 12680771
+2022-01-08T08:17:08.948528Z 0 [Note] InnoDB: Database was not shutdown normally!
+2022-01-08T08:17:08.948530Z 0 [Note] InnoDB: Starting crash recovery.
+2022-01-08T08:17:09.340564Z 0 [Note] InnoDB: Removed temporary tablespace data file: "ibtmp1"
+2022-01-08T08:17:09.340624Z 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2022-01-08T08:17:09.340729Z 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2022-01-08T08:17:09.764669Z 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+2022-01-08T08:17:09.769504Z 0 [Note] InnoDB: 96 redo rollback segment(s) found. 96 redo rollback segment(s) are active.
+2022-01-08T08:17:09.769542Z 0 [Note] InnoDB: 32 non-redo rollback segment(s) are active.
+2022-01-08T08:17:09.771731Z 0 [Note] InnoDB: Waiting for purge to start
+2022-01-08T08:17:09.824538Z 0 [Note] InnoDB: 5.7.36 started; log sequence number 12680780
+2022-01-08T08:17:09.825772Z 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+2022-01-08T08:17:09.829108Z 0 [Note] Plugin 'FEDERATED' is disabled.
+2022-01-08T08:17:10.046898Z 0 [Note] InnoDB: Buffer pool(s) load completed at 220108  8:17:10
+2022-01-08T08:17:10.387361Z 0 [Note] Found ca.pem, server-cert.pem and server-key.pem in data directory. Trying to enable SSL support using them.
+2022-01-08T08:17:10.388183Z 0 [Note] Skipping generation of SSL certificates as certificate files are present in data directory.
+2022-01-08T08:17:10.388228Z 0 [Warning] A deprecated TLS version TLSv1 is enabled. Please use TLSv1.2 or higher.
+2022-01-08T08:17:10.388699Z 0 [Warning] A deprecated TLS version TLSv1.1 is enabled. Please use TLSv1.2 or higher.
+2022-01-08T08:17:10.431559Z 0 [Warning] CA certificate ca.pem is self signed.
+2022-01-08T08:17:10.436300Z 0 [Note] Skipping generation of RSA key pair as key files are present in data directory.
+2022-01-08T08:17:10.444016Z 0 [Note] Server hostname (bind-address): '*'; port: 3306
+2022-01-08T08:17:10.447989Z 0 [Note] IPv6 is available.
+2022-01-08T08:17:10.448554Z 0 [Note]   - '::' resolves to '::';
+2022-01-08T08:17:10.448820Z 0 [Note] Server socket created on IP: '::'.
+2022-01-08T08:17:10.458340Z 0 [Warning] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+2022-01-08T08:17:10.784671Z 0 [Note] Event Scheduler: Loaded 0 events
+2022-01-08T08:17:10.785984Z 0 [Note] mysqld: ready for connections.
+2022-01-08T08:18:44.245453Z 2 [Note] Access denied for user 'root'@'localhost' (using password: YES)
+2022-01-08T08:18:59.237525Z 3 [Note] Access denied for user 'root'@'localhost' (using password: YES)
+2022-01-08T08:19:10.936328Z 4 [Note] Access denied for user 'root'@'localhost' (using password: YES)
+2022-01-08T08:22:18.034645Z 5 [Note] Access denied for user 'root'@'localhost' (using password: YES)
+2022-01-08T08:22:28.976905Z 6 [Note] Access denied for user 'root'@'localhost' (using password: YES)
+2022-01-08T08:25:15.419125Z 7 [Note] Access denied for user 'root'@'localhost' (using password: YES)
+2022-01-08T08:25:30.445262Z 8 [Note] Access denied for user 'root'@'localhost' (using password: YES)
+2022-01-08T08:25:39.715857Z 9 [Note] Access denied for user 'root'@'localhost' (using password: YES)
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS          PORTS                    NAMES
+03e795cd5a2f   mysql:5.7         "docker-entrypoint.s…"   11 minutes ago   Up 11 minutes   3306/tcp, 33060/tcp      great_carver
+25a1e56ef7dd   getting-started   "docker-entrypoint.s…"   44 minutes ago   Up 44 minutes   0.0.0.0:3000->3000/tcp   nice_kapitsa
+09b200f900af   ubuntu            "bash -c 'shuf -i 1-…"   56 minutes ago   Up 56 minutes                            peaceful_goldberg
+7c3191b27ccd   node:12-alpine    "docker-entrypoint.s…"   8 days ago       Up 2 hours      0.0.0.0:3002->3000/tcp   app_app_1
+ec9d0b3469dc   mysql:5.7         "docker-entrypoint.s…"   8 days ago       Up 2 hours      3306/tcp, 33060/tcp      app_mysql_1
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it 03e795cd5a2f mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 5.7.36 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| todos              |
++--------------------+
+5 rows in set (0.13 sec)
+
+mysql> exit
+Bye
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker ru -it --network todo1-app nicolaka/netshoot
+unknown shorthand flag: 'i' in -it
+See 'docker --help'.
+
+Usage:  docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Options:
+      --config string      Location of client config files (default
+                           "C:\\Users\\Madhuri\\.docker")
+  -c, --context string     Name of the context to use to connect to the
+                           daemon (overrides DOCKER_HOST env var and
+                           default context set with "docker context use")
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket(s) to connect to
+  -l, --log-level string   Set the logging level
+                           ("debug"|"info"|"warn"|"error"|"fatal")
+                           (default "info")
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default
+                           "C:\\Users\\Madhuri\\.docker\\ca.pem")
+      --tlscert string     Path to TLS certificate file (default
+                           "C:\\Users\\Madhuri\\.docker\\cert.pem")
+      --tlskey string      Path to TLS key file (default
+                           "C:\\Users\\Madhuri\\.docker\\key.pem")
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Management Commands:
+  builder     Manage builds
+  buildx*     Docker Buildx (Docker Inc., v0.7.1)
+  compose*    Docker Compose (Docker Inc., v2.2.1)
+  config      Manage Docker configs
+  container   Manage containers
+  context     Manage contexts
+  image       Manage images
+  manifest    Manage Docker image manifests and manifest lists
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  scan*       Docker Scan (Docker Inc., v0.14.0)
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  history     Show the history of an image
+  images      List images
+  import      Import the contents from a tarball to create a filesystem image
+  info        Display system-wide information
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  login       Log in to a Docker registry
+  logout      Log out from a Docker registry
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  ps          List containers
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  run         Run a command in a new container
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  search      Search the Docker Hub for images
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  version     Show the Docker version information
+  wait        Block until one or more containers stop, then print their exit codes
+
+Run 'docker COMMAND --help' for more information on a command.
+
+To get more help with docker, check out our guides at https://docs.docker.com/go/guides/
+
+
+                    dP            dP                           dP
+                    88            88                           88
+88d888b. .d8888b. d8888P .d8888b. 88d888b. .d8888b. .d8888b. d8888P
+88'  `88 88ooood8   88   Y8ooooo. 88'  `88 88'  `88 88'  `88   88
+88    88 88.  ...   88         88 88    88 88.  .88 88.  .88   88
+dP    dP `88888P'   dP   `88888P' dP    dP `88888P' `88888P'   dP
+
+Welcome to Netshoot! (github.com/nicolaka/netshoot)
+
+
+ e48fb4851e8a  ~ 
+
+; <<>> DiG 9.16.22 <<>> mysql
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 42554
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+;mysql.                         IN      A
+
+;; ANSWER SECTION:
+mysql.                  600     IN      A       172.19.0.2
+
+;; Query time: 10 msec
+;; SERVER: 127.0.0.11#53(127.0.0.11)
+;; WHEN: Sat Jan 08 08:49:30 UTC 2022
+;; MSG SIZE  rcvd: 44
+
+
+ e48fb4851e8a  ~  exit
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker run -dp 3000:3000 `
+>> -w /app -v "$(pwd):/app" `
+>> --network todo1-app `
+>> -e MYSQL_HOST=mysql `
+>> -e MYSQL_USER=root `
+>> -e MYSQL_DB=todos `
+>> node:12-alpine `
+>> sh -c "yarn install && yarn run dev"
+830fce18ad590e54919e687ad6a3c5e6f89c02bf89b7c736b226c5711688ef6d
+docker: Error response from daemon: driver failed programming external connectivity on endpoint intelligent_roentgen (e780f35460e5a7e61048eea8d473223a11fe5d27e90bb26fe2f5a4de292ca906): Bind for 0.0.0.0:3000 failed: port is already allocated.
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker run -dp 3001:3000 `
+>> -w /app -v "$(pwd):/app" `
+>> --network todo1-app `
+>> -e MYSQL_HOST=mysql `
+>> -e MYSQL_USER=root `
+>> -e MYSQL_PASSWORD=secret `
+>> -e MYSQL_DB=todos `
+>> node:12-alpine `
+>> sh -c "yarn install && yarn run dev"
+bc2ce9b410f60ee451556ecbdd022303515d77e5aea059dc46c1c07d8af53c13
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app>
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED             STATUS             PORTS                    NAMES
+bc2ce9b410f6   node:12-alpine    "docker-entrypoint.s…"   27 seconds ago      Up 22 seconds      0.0.0.0:3001->3000/tcp   hopeful_almeida
+03e795cd5a2f   mysql:5.7         "docker-entrypoint.s…"   38 minutes ago      Up 38 minutes      3306/tcp, 33060/tcp      great_carver
+25a1e56ef7dd   getting-started   "docker-entrypoint.s…"   About an hour ago   Up About an hour   0.0.0.0:3000->3000/tcp   nice_kapitsa
+09b200f900af   ubuntu            "bash -c 'shuf -i 1-…"   About an hour ago   Up About an hour                            peaceful_goldberg
+7c3191b27ccd   node:12-alpine    "docker-entrypoint.s…"   8 days ago          Up 2 hours         0.0.0.0:3002->3000/tcp   app_app_1
+ec9d0b3469dc   mysql:5.7         "docker-entrypoint.s…"   8 days ago          Up 2 hours         3306/tcp, 33060/tcp      app_mysql_1
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker logs bc2ce9b410f6 
+yarn install v1.22.17
+[1/4] Resolving packages...
+warning Resolution field "ansi-regex@5.0.1" is incompatible with requested version "ansi-regex@^2.0.0"
+warning Resolution field "ansi-regex@5.0.1" is incompatible with requested version "ansi-regex@^3.0.0"
+success Already up-to-date.
+Done in 1.51s.
+yarn run v1.22.17
+$ nodemon src/index.js
+[nodemon] 2.0.13
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching path(s): *.*
+[nodemon] watching extensions: js,mjs,json
+[nodemon] starting `node src/index.js`
+Waiting for mysql:3306.
+Connected!
+Connected to mysql db at host mysql
+Listening on port 3000
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker exec -it 03e795cd5a2f mysql -p todos
+Enter password: 
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 5.7.36 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> select * from todo-items;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-items' at line 
+1
+mysql> select * from todo_items;
++--------------------------------------+------+-----------+
+| id                                   | name | completed |
++--------------------------------------+------+-----------+
+| 61477c13-0690-4fb7-a887-6904ca540e28 | 1    |         0 |
+| b631b565-ec1b-4578-94cf-3b4980af5c7c | 12   |         1 |
+| c1b15247-4b06-4bdc-808e-d36282af7eb0 | 13   |         0 |
+| ebec5aa1-8a74-47ef-886d-62a18e74d732 | 14   |         1 |
+| 3eac18ac-5925-4dd2-9c08-0e513cf3a5c0 | 15   |         0 |
+| 0950a476-ec09-4111-a96f-a0fdf7547249 | 46   |         1 |
+| cfeb8ff1-3b88-4120-885c-cf85f7118862 | 78   |         0 |
++--------------------------------------+------+-----------+
+7 rows in set (0.06 sec)
+
+mysql> exit
+Bye
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app>
+
+
+
+
+
+
+
+
+
+   
+
+
+

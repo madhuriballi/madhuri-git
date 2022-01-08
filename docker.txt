@@ -1,0 +1,58 @@
+# syntax=docker/dockerfile:1
+FROM node:12-alpine
+RUN apk add --no-cache python2 g++ make
+WORKDIR /app
+COPY . .
+RUN yarn install --production
+CMD ["node", "src/index.js"]
+
+
+
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master> cd app
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker build -t getting-started
+"docker build" requires exactly 1 argument.
+See 'docker build --help'.
+
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker build -t getting-started .
+[+] Building 109.3s (15/15) FINISHED
+ => [internal] load build definition from Dockerfile                                                                                                                             0.1s 
+ => => transferring dockerfile: 32B                                                                                                                                              0.0s 
+ => [internal] load .dockerignore                                                                                                                                                0.0s 
+ => => transferring context: 2B                                                                                                                                                  0.0s 
+ => resolve image config for docker.io/docker/dockerfile:1                                                                                                                       7.0s 
+ => [auth] docker/dockerfile:pull token for registry-1.docker.io                                                                                                                 0.0s 
+ => CACHED docker-image://docker.io/docker/dockerfile:1@sha256:42399d4635eddd7a9b8a24be879d2f9a930d0ed040a61324cfdf59ef1357b3b2                                                  0.0s 
+ => [internal] load build definition from Dockerfile                                                                                                                             0.0s 
+ => [internal] load .dockerignore                                                                                                                                                0.0s 
+ => [internal] load metadata for docker.io/library/node:12-alpine                                                                                                                0.0s 
+ => [1/5] FROM docker.io/library/node:12-alpine                                                                                                                                  0.0s 
+ => => transferring context: 54.35MB                                                                                                                                            46.7s 
+ => CACHED [2/5] RUN apk add --no-cache python2 g++ make                                                                                                                         0.0s 
+ => CACHED [3/5] WORKDIR /app                                                                                                                                                    0.0s 
+ => [4/5] COPY . .                                                                                                                                                               5.8s 
+ => exporting to image                                                                                                                                                           5.0s 
+ => => writing image sha256:8473f4bd245d910f3d357c92c60448e14c6f0a61105307ad9b5b70f0ab5181eb                                                                                     0.0s 
+ => => naming to docker.io/library/getting-started                                                                                                                               0.0s 
+Use 'docker scan' to run Snyk tests against images to find vulnerabilities and learn how to fix them
+Unable to find image 'grttng-started:latest' locally
+docker: Error response from daemon: pull access denied for grttng-started, repository does not exist or may require 'docker login': denied: requested access to the resource is deniedenied.
+See 'docker run --help'.
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker run -dp 3000:3000 getting-started
+8a975a32fbfe8c0bb2ecf3fbe0ac498dfa4d3d108ff1f0cc724ce52ea7127162
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED              STATUS              PORTS                    NAMES
+8a975a32fbfe   getting-started   "docker-entrypoint.s…"   About a minute ago   Up About a minute   0.0.0.0:3000->3000/tcp   intelligent_nobel
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker stop 8a975a32fbfe
+8a975a32fbfe
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app> docker rm 8a975a32fbfe
+8a975a32fbfe
+PS C:\Users\Madhuri\Downloads\getting-started-master\getting-started-master\app>
+
+
+
+
+
+

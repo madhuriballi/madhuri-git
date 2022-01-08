@@ -1,0 +1,171 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bb-demo
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      bb: web
+  template:
+    metadata:
+      labels:
+        bb: web
+    spec:
+      containers:
+      - name: bb-site
+        image: madhuriballi/getting-started
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bb-entrypoint
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    bb: web
+  ports:
+  - port: 3000
+    targetPort: 3000
+    nodePort: 30001
+
+
+PS C:\Users\Madhuri\Desktop\kubernetes> kubectl apply -f bb.yaml
+deployment.apps/bb-demo created
+service/bb-entrypoint created
+PS C:\Users\Madhuri\Desktop\kubernetes> kubectl get deployments
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+bb-demo   1/1     1            1           20s
+PS C:\Users\Madhuri\Desktop\kubernetes> kubectl get services
+NAME            TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+bb-entrypoint   NodePort    10.108.179.43   <none>        3000:30001/TCP   32s
+kubernetes      ClusterIP   10.96.0.1       <none>        443/TCP          45h
+PS C:\Users\Madhuri\Desktop\kubernetes> kubectl delete -f bb.yaml
+deployment.apps "bb-demo" deleted
+service "bb-entrypoint" deleted
+PS C:\Users\Madhuri\Desktop\kubernetes>
+
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: demo
+spec:
+ containers:
+ - name: testpod
+   image: alpine:3.5
+   command: ["ping","8.8.8.8"]
+
+
+
+
+PS C:\Users\Madhuri\Desktop\kubernetes> kubectl apply -f pod.yaml
+pod/demo created
+PS C:\Users\Madhuri\Desktop\kubernetes> kubectl get pods          
+NAME   READY   STATUS    RESTARTS   AGE
+demo   1/1     Running   0          36s
+PS C:\Users\Madhuri\Desktop\kubernetes> kubectl logs demo
+PING 8.8.8.8 (8.8.8.8): 56 data bytes
+64 bytes from 8.8.8.8: seq=0 ttl=37 time=80.177 ms
+64 bytes from 8.8.8.8: seq=1 ttl=37 time=80.362 ms
+64 bytes from 8.8.8.8: seq=2 ttl=37 time=87.563 ms
+64 bytes from 8.8.8.8: seq=3 ttl=37 time=72.996 ms
+64 bytes from 8.8.8.8: seq=4 ttl=37 time=283.981 ms
+64 bytes from 8.8.8.8: seq=5 ttl=37 time=74.881 ms
+64 bytes from 8.8.8.8: seq=6 ttl=37 time=101.424 ms
+64 bytes from 8.8.8.8: seq=7 ttl=37 time=69.773 ms
+64 bytes from 8.8.8.8: seq=8 ttl=37 time=61.882 ms
+64 bytes from 8.8.8.8: seq=9 ttl=37 time=336.675 ms
+64 bytes from 8.8.8.8: seq=10 ttl=37 time=75.984 ms
+64 bytes from 8.8.8.8: seq=11 ttl=37 time=86.590 ms
+64 bytes from 8.8.8.8: seq=12 ttl=37 time=76.577 ms
+64 bytes from 8.8.8.8: seq=13 ttl=37 time=75.935 ms
+64 bytes from 8.8.8.8: seq=14 ttl=37 time=405.807 ms
+64 bytes from 8.8.8.8: seq=15 ttl=37 time=85.515 ms
+64 bytes from 8.8.8.8: seq=16 ttl=37 time=72.317 ms
+64 bytes from 8.8.8.8: seq=17 ttl=37 time=76.027 ms
+64 bytes from 8.8.8.8: seq=18 ttl=37 time=68.460 ms
+64 bytes from 8.8.8.8: seq=19 ttl=37 time=239.942 ms
+64 bytes from 8.8.8.8: seq=20 ttl=37 time=75.233 ms
+64 bytes from 8.8.8.8: seq=21 ttl=37 time=69.475 ms
+64 bytes from 8.8.8.8: seq=22 ttl=37 time=75.378 ms
+64 bytes from 8.8.8.8: seq=23 ttl=37 time=73.847 ms
+64 bytes from 8.8.8.8: seq=24 ttl=37 time=297.722 ms
+64 bytes from 8.8.8.8: seq=25 ttl=37 time=77.271 ms
+64 bytes from 8.8.8.8: seq=26 ttl=37 time=96.647 ms
+64 bytes from 8.8.8.8: seq=27 ttl=37 time=72.724 ms
+64 bytes from 8.8.8.8: seq=28 ttl=37 time=82.073 ms
+64 bytes from 8.8.8.8: seq=30 ttl=37 time=83.919 ms
+64 bytes from 8.8.8.8: seq=32 ttl=37 time=88.585 ms
+64 bytes from 8.8.8.8: seq=34 ttl=37 time=411.296 ms
+64 bytes from 8.8.8.8: seq=35 ttl=37 time=64.931 ms
+64 bytes from 8.8.8.8: seq=37 ttl=37 time=74.177 ms
+64 bytes from 8.8.8.8: seq=38 ttl=37 time=89.617 ms
+64 bytes from 8.8.8.8: seq=39 ttl=37 time=180.867 ms
+64 bytes from 8.8.8.8: seq=40 ttl=37 time=103.104 ms
+pod "demo" deleted
+PS C:\Users\Madhuri\Desktop\kubernetes> docker swarm init
+PS C:\Users\Madhuri\Desktop\kubernetes> docker swarm join --token
+flag needs an argument: --token
+See 'docker swarm join --help'.
+PS C:\Users\Madhuri\Desktop\kubernetes> docker service create --name demo alpine:3.5 ping 8.8.8.8
+u36dxo47f0oyjwd7121ju1165
+overall progress: 1 out of 1 tasks
+1/1: running   [==================================================>]
+verify: Service converged
+PS C:\Users\Madhuri\Desktop\kubernetes> docker service ps demo
+ID             NAME      IMAGE        NODE             DESIRED STATE   CURRENT STATE            ERROR     PORTS
+mf0aqdkfcmfz   demo.1    alpine:3.5   docker-desktop   Running         Running 19 seconds ago
+PS C:\Users\Madhuri\Desktop\kubernetes> docker service logs  demo
+demo.1.mf0aqdkfcmfz@docker-desktop    | PING 8.8.8.8 (8.8.8.8): 56 data bytes
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=0 ttl=37 time=383.239 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=1 ttl=37 time=77.994 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=2 ttl=37 time=76.773 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=3 ttl=37 time=69.491 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=4 ttl=37 time=92.717 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=5 ttl=37 time=215.786 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=6 ttl=37 time=66.655 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=7 ttl=37 time=86.523 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=8 ttl=37 time=76.194 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=9 ttl=37 time=74.905 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=10 ttl=37 time=284.179 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=11 ttl=37 time=64.199 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=12 ttl=37 time=70.694 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=13 ttl=37 time=83.493 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=14 ttl=37 time=78.012 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=15 ttl=37 time=136.968 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=16 ttl=37 time=72.415 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=17 ttl=37 time=81.249 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=18 ttl=37 time=93.765 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=19 ttl=37 time=71.999 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=20 ttl=37 time=195.402 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=21 ttl=37 time=83.650 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=22 ttl=37 time=91.415 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=23 ttl=37 time=76.864 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=24 ttl=37 time=93.526 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=25 ttl=37 time=151.106 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=27 ttl=37 time=93.046 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=28 ttl=37 time=75.076 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=29 ttl=37 time=63.678 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=30 ttl=37 time=91.516 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=31 ttl=37 time=83.815 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=32 ttl=37 time=82.119 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=33 ttl=37 time=78.861 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=34 ttl=37 time=78.504 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=35 ttl=37 time=132.141 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=36 ttl=37 time=88.750 ms
+demo.1.mf0aqdkfcmfz@docker-desktop    | 64 bytes from 8.8.8.8: seq=37 ttl=37 time=83.052 ms
+PS C:\Users\Madhuri\Desktop\kubernetes> docker service rm  demo
+demo
+PS C:\Users\Madhuri\Desktop\kubernetes>
+
+
+
+
+
+
+
+

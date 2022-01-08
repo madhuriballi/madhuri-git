@@ -1,0 +1,206 @@
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~ (master)
+$ mkdir status
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~ (master)
+$
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~ (master)
+$ cd desktop
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop (master)
+$ mkdir status
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop (master)
+$ cd status
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git add git.txt commands.txt
+fatal: pathspec 'git.txt' did not match any files
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git add git.txt
+fatal: pathspec 'git.txt' did not match any files
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git add .
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git init
+Initialized empty Git repository in C:/Users/Madhuri/Desktop/status/.git/
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git add .
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git commit
+Aborting commit due to empty commit message.
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git diff --cached
+diff --git a/command.txt b/command.txt
+new file mode 100644
+index 0000000..fabfbb2
+--- /dev/null
++++ b/command.txt
+@@ -0,0 +1 @@
++hi hello
+\ No newline at end of file
+diff --git a/git.txt b/git.txt
+new file mode 100644
+index 0000000..cdb6339
+--- /dev/null
++++ b/git.txt
+@@ -0,0 +1 @@
++hi im madhuri
+\ No newline at end of file
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   command.txt
+        new file:   git.txt
+
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git commit -u -a
+Aborting commit due to empty commit message.
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git log
+fatal: your current branch 'master' does not have any commits yet
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git logs
+git: 'logs' is not a git command. See 'git --help'.
+
+The most similar command is
+        log
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git commit -u "project version2.0"
+error: pathspec 'project version2.0' did not match any file(s) known to git
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git commit -u "project version 2.0"
+error: pathspec 'project version 2.0' did not match any file(s) known to git
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git commit -m "project version 2.0"
+[master (root-commit) c29e9a0] project version 2.0
+ 2 files changed, 2 insertions(+)
+ create mode 100644 command.txt
+ create mode 100644 git.txt
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git log
+commit c29e9a03a2402aebd745fb27fdc289a58a551f73 (HEAD -> master)
+Author: madhuri <madhuri28@gmail.com>
+Date:   Sat Jan 8 15:11:45 2022 +0530
+
+    project version 2.0
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git log -p
+commit c29e9a03a2402aebd745fb27fdc289a58a551f73 (HEAD -> master)
+Author: madhuri <madhuri28@gmail.com>
+Date:   Sat Jan 8 15:11:45 2022 +0530
+
+    project version 2.0
+
+diff --git a/command.txt b/command.txt
+new file mode 100644
+index 0000000..fabfbb2
+--- /dev/null
++++ b/command.txt
+@@ -0,0 +1 @@
++hi hello
+\ No newline at end of file
+diff --git a/git.txt b/git.txt
+new file mode 100644
+index 0000000..cdb6339
+--- /dev/null
++++ b/git.txt
+@@ -0,0 +1 @@
++hi im madhuri
+\ No newline at end of file
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git log --stat --summary
+commit c29e9a03a2402aebd745fb27fdc289a58a551f73 (HEAD -> master)
+Author: madhuri <madhuri28@gmail.com>
+Date:   Sat Jan 8 15:11:45 2022 +0530
+
+    project version 2.0
+
+ command.txt | 1 +
+ git.txt     | 1 +
+ 2 files changed, 2 insertions(+)
+ create mode 100644 command.txt
+ create mode 100644 git.txt
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git branch experimental
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git branch
+  experimental
+* master
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git switch experimental
+Switched to branch 'experimental'
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (experimental)
+$ git merge experimental
+Already up to date.
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (experimental)
+$ git switch merge
+fatal: invalid reference: merge
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (experimental)
+$ git switch master
+Switched to branch 'master'
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git diff
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ gitk
+
+
+
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git clone https://github.com/madhuriballi/madhuri-git.git
+Cloning into 'madhuri-git'...
+warning: You appear to have cloned an empty repository.
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$ git push https://github.com/madhuriballi/madhuri-git.git
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (4/4), 276 bytes | 138.00 KiB/s, done.
+Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/madhuriballi/madhuri-git.git
+ * [new branch]      master -> master
+
+Madhuri@DESKTOP-D45N6PK MINGW64 ~/desktop/status (master)
+$
